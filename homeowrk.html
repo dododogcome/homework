@@ -25,9 +25,20 @@
 				justify-content: center;
 				font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 				color: #f7f7ff;
-				background: radial-gradient(circle at top left, var(--c1), var(--c3)),
-					radial-gradient(circle at bottom right, var(--c4), var(--c2));
-				background-blend-mode: screen, normal;
+				position: relative;
+				background: #000;
+				overflow: hidden;
+			}
+
+			body::before {
+				content: "";
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: url("concert.png") center center / cover no-repeat;
+				z-index: -1;
 			}
 
 			.ticket-status {
