@@ -206,6 +206,16 @@
 				}
 			}
 
+			.seat-page-image {
+				position: fixed;
+				left: 1rem;
+				top: 50%;
+				transform: translateY(-50%);
+				width: auto;
+				border-radius: 16px;
+				box-shadow: 0 18px 40px rgba(0, 0, 0, 0.85);
+			}
+
 			.gif-wrapper {
 				width: 100%;
 				border-radius: 18px;
@@ -245,6 +255,7 @@
 		</style>
 	</head>
 	<body>
+		<img class="seat-page-image" src="seat.png" alt="Seat" />
 		<div class="ticket-status">tickets left : <span id="tickets-left-value"></span></div>
 		<main class="main">
 			<div class="clock-shell" aria-hidden="true">
@@ -268,6 +279,8 @@
 			</div>
 			<p class="message">We are waiting for you</p>
 		</main>
+
+		<audio id="clock-sound" src="clock.mp3" autoplay loop></audio>
 
 		<script>
 			// Random tickets left between 100 and 10000
@@ -370,6 +383,7 @@
 			var imageEl = document.getElementById("main-image");
 			var messageEl = document.querySelector(".message");
 			var gifWrapper = document.querySelector(".gif-wrapper");
+			var seatPageImage = document.querySelector(".seat-page-image");
 			var resetTimeoutId = null;
 
 			// Lock the wrapper to the original nmmix_static aspect ratio only
@@ -382,6 +396,14 @@
 				gifWrapper.style.aspectRatio = baseImgWidth + " / " + baseImgHeight;
 			}
 
+			function sizeSeatImageToGif() {
+				if (!gifWrapper || !seatPageImage) return;
+				var h = gifWrapper.clientHeight;
+				if (!h) return;
+				seatPageImage.style.height = h + "px";
+				seatPageImage.style.width = "auto";
+			}
+
 			if (imageEl) {
 				function initBaseDimensions() {
 					if (!imageEl.naturalWidth || !imageEl.naturalHeight) return;
@@ -389,6 +411,7 @@
 					baseImgWidth = imageEl.naturalWidth;
 					baseImgHeight = imageEl.naturalHeight;
 					setWrapperAspectRatioFromBase();
+					sizeSeatImageToGif();
 				}
 
 				if (imageEl.complete) {
@@ -400,6 +423,10 @@
 					});
 				}
 			}
+
+			window.addEventListener("resize", function () {
+				sizeSeatImageToGif();
+			});
 
 			if (gifWrapper && imageEl && messageEl && memberImages.length) {
 				gifWrapper.addEventListener("click", function () {
